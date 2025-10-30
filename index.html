@@ -25,6 +25,8 @@ html, body {
   color: var(--text);
   overflow-x: hidden;
 }
+
+/* 📦 Cấu trúc chính */
 .wrap {
   display: flex;
   align-items: center;
@@ -60,6 +62,7 @@ html, body {
   z-index: 2;
 }
 
+/* 🚪 Cửa bên trái */
 .left {
   width: 40%;
   min-height: 300px;
@@ -102,6 +105,7 @@ html, body {
   font-weight: 600;
 }
 
+/* 🌅 Phần cảnh bên phải */
 .right {
   width: 60%;
   min-height: 300px;
@@ -112,7 +116,7 @@ html, body {
   justify-content: center;
 }
 
-/* Scene */
+/* 🎬 Cảnh */
 .scene {
   position: absolute;
   inset: 0;
@@ -122,7 +126,7 @@ html, body {
   align-items: center;
   transition: opacity 1s ease;
   opacity: 0;
-  padding: 30px 20px 120px; /* tăng khoảng trống dưới để không bị che */
+  padding: 40px 20px 160px; /* Tăng khoảng trống dưới */
   overflow-y: auto;
   text-align: center;
   box-sizing: border-box;
@@ -146,6 +150,7 @@ html, body {
   opacity: 0.9;
 }
 
+/* 💬 Lời chúc */
 .greeting {
   z-index: 5;
   max-width: 85%;
@@ -210,9 +215,9 @@ html, body {
 /* 💐 Bó hoa */
 .bouquet {
   display: block;
-  margin: 25px auto 0 auto;
-  width: 180px;
-  max-width: 60%;
+  margin: 35px auto 0 auto;
+  width: 200px;
+  max-width: 65%;
   height: auto;
   opacity: 0;
   filter: drop-shadow(0 10px 12px rgba(0,0,0,0.25));
@@ -254,8 +259,8 @@ html, body {
   .left, .right {width: 100%; min-height: 300px;}
   .door {height: 60vw; max-height: 350px;}
   .sun {width: 220px; height: 220px;}
-  .scene {padding-bottom: 140px;} /* thêm khoảng trống lớn hơn trên mobile */
-  .bouquet {width: 140px; max-width: 60%;}
+  .scene {padding-bottom: 180px;} /* tăng khoảng cách dưới hơn nữa */
+  .bouquet {width: 140px; max-width: 70%;}
 }
 </style>
 </head>
@@ -283,7 +288,7 @@ html, body {
         <div class="sun"></div>
         <div class="greeting">
           <h1>Chị bé ☀️</h1>
-          <p>Hôm nay nhớ nghỉ ngơi nhiều hơn một chút 💛</p>
+          <p>Hôm nay nhớ nghỉ ngơi nhiều hơn một chút nhaa 💛</p>
         </div>
       </div>
 
@@ -321,6 +326,7 @@ const audio=document.getElementById("bgAudio");
 let soundOn=true;
 const doorSound=new Audio("door_open.mp3");
 
+/* 🔊 Tự phát nhạc khi mở trang */
 window.addEventListener("DOMContentLoaded",()=>{
   const tryPlay=()=>{
     audio.volume=0.6;
@@ -331,6 +337,7 @@ window.addEventListener("DOMContentLoaded",()=>{
   tryPlay();
 });
 
+/* ☁️ Mây và chim */
 function createClouds(){
   for(let i=0;i<3;i++){
     const c=document.createElement("div");
@@ -351,11 +358,15 @@ function createBird(){
   scenes[0].appendChild(b);
   gsap.to(b,{x:window.innerWidth+100,yoyo:true,repeat:-1,duration:25,ease:"none"});
 }
+
+/* 🌞 Mặt trời mọc */
 function sunrise(){
   const sun=scenes[1].querySelector(".sun");
   gsap.fromTo(sun,{bottom:"-40%"},{bottom:"20%",duration:3,ease:"power2.out"});
   gsap.to(sun,{scale:1.05,repeat:-1,yoyo:true,duration:3,ease:"sine.inOut"});
 }
+
+/* 💫 Hạt sáng */
 function createParticles(count=20){
   particles.innerHTML="";
   for(let i=0;i<count;i++){
@@ -377,13 +388,19 @@ function floatParticle(p){
     floatParticle(p);
   }});
 }
+
+/* 💐 Hiện bó hoa */
 function showBouquet(){
   bouquet.classList.add("show-bouquet");
 }
+
+/* 💡 Ánh sáng cửa */
 function doorLightEffect(){
   gsap.to(doorLight,{opacity:1,duration:0.8,ease:"power2.out"});
   gsap.to(doorLight,{opacity:0,duration:2.2,delay:1.2,ease:"sine.inOut"});
 }
+
+/* 🚪 Mở cửa */
 function openDoor(){
   doorSound.play().catch(()=>{});
   gsap.to(door,{rotateY:-100,duration:1.2,ease:"power3.out"});
@@ -391,6 +408,8 @@ function openDoor(){
   doorLightEffect();
   playScenes();
 }
+
+/* 🎞️ Chuyển cảnh */
 function playScenes(){
   scenes.forEach(s=>s.style.opacity=0);
   const tl=gsap.timeline({defaults:{ease:"power2.inOut"}});
@@ -400,6 +419,7 @@ function playScenes(){
     .to(scenes[1],{opacity:0,duration:1,delay:4})
     .to(scenes[2],{opacity:1,duration:1,onStart:()=>{createParticles();showBouquet();}});
 }
+
 openBtn.onclick=openDoor;
 soundBtn.onclick=()=>{
   soundOn=!soundOn;
