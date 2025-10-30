@@ -122,7 +122,7 @@ html, body {
   align-items: center;
   transition: opacity 1s ease;
   opacity: 0;
-  padding: 30px 20px 60px;
+  padding: 30px 20px 120px; /* tăng khoảng trống dưới để không bị che */
   overflow-y: auto;
   text-align: center;
   box-sizing: border-box;
@@ -230,12 +230,12 @@ html, body {
 
 /* ⚙️ Nút điều khiển */
 .controls {
-  position: absolute;
+  position: fixed;
   left: 14px;
   bottom: 14px;
   display: flex;
   gap: 8px;
-  z-index: 10;
+  z-index: 9999;
 }
 .btn {
   background: rgba(255,255,255,0.1);
@@ -254,7 +254,7 @@ html, body {
   .left, .right {width: 100%; min-height: 300px;}
   .door {height: 60vw; max-height: 350px;}
   .sun {width: 220px; height: 220px;}
-  .scene {padding-bottom: 90px;} /* thêm chỗ trống để không bị che */
+  .scene {padding-bottom: 140px;} /* thêm khoảng trống lớn hơn trên mobile */
   .bouquet {width: 140px; max-width: 60%;}
 }
 </style>
@@ -296,13 +296,14 @@ html, body {
           <img src="hoa.png" alt="Bouquet" class="bouquet" id="bouquet" />
         </div>
       </div>
-
-      <div class="controls">
-        <button class="btn" id="openBtn">OPEN</button>
-        <button class="btn" id="soundBtn">Tắt âm</button>
-      </div>
     </div>
   </div>
+</div>
+
+<!-- Nút điều khiển -->
+<div class="controls">
+  <button class="btn" id="openBtn">OPEN</button>
+  <button class="btn" id="soundBtn">Tắt âm</button>
 </div>
 
 <audio id="bgAudio" loop preload="auto" src="song.mp3"></audio>
