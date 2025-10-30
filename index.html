@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Buổi sáng an lành — Trời trong và dịu dàng 🌸</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<style>
+:root {
+  --bg1: #0b1020;
+  --dawn1: #2b1d3a;
+  --dawn2: #fcb0ff;
+  --sun1: #ffd7a8;
+  --sun2: #ffeecf;
+  --skyday1: #b9eaff;
+  --skyday2: #eafcff;
+  --text: #0f1724;
+  font-family: 'Nunito', 'Inter', system-ui, sans-serif;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg1);
+  color: var(--text);
+  overflow: hidden;
+}
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.card {
+  width: min(960px, 95vw);
+  height: min(600px, 85vh);
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #111423;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+/* ✨ Ánh sáng chiếu qua cửa */
+.door-light {
+  position: absolute;
+  left: 40%;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  background: radial-gradient(circle at left center, rgba(255,240,180,0.5) 0%, rgba(255,230,150,0.25) 25%, rgba(255,220,120,0.05) 70%, transparent 100%);
+  filter: blur(40px);
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0.8) skewX(-12deg);
+  z-index: 2;
+}
+
+.left {
+  width: 42%;
+  background: linear-gradient(180deg,#1d2433,#11121a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.door {
+  width: 85%;
+  height: 82%;
+  background: linear-gradient(180deg,#2f1f18,#3b2a22);
+  border-radius: 12px;
+  box-shadow: inset 0 6px 20px rgba(0,0,0,0.5);
+  transform-origin: left center;
+  position: relative;
+}
+.door::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e6c07a;
+  box-shadow: 0 0 8px #e6c07a;
+}
+.door-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.right {
+  width: 58%;
+  position: relative;
+  overflow: hidden;
+}
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 1s ease;
+  opacity: 0;
+}
+#scene1 {background: radial-gradient(circle at 50% 100%, var(--dawn2), var(--dawn1)); overflow: hidden;}
+#scene2 {background: linear-gradient(180deg, var(--sun1), var(--sun2));}
+#scene3 {background: linear-gradient(180deg, var(--skyday1), var(--skyday2));}
+
+.sun {
+  position: absolute;
+  left: 50%;
+  bottom: -40%;
+  transform: translateX(-50%);
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 30%, #fff3d6 0%, #ffd6a5 20%, #ffb07a 50%, rgba(255,120,75,0.9) 70%);
+  filter: blur(22px);
+  opacity: 0.9;
+}
+.greeting {
+  text-align: center;
+  z-index: 5;
+  max-width: 80%;
+}
+.greeting h1 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 36px);
+}
+.greeting p {
+  margin-top: 10px;
+  font-size: clamp(14px, 1.6vw, 18px);
+  opacity: 0.8;
+}
+
+/* ☁️ Mây & Chim */
+.cloud {
+  position: absolute;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.8;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.cloud::before { width: 60%; height: 60%; top: -20%; left: 20%; }
+.cloud::after { width: 70%; height: 70%; top: 10%; left: 50%; }
+
+.bird {
+  position: absolute;
+  width: 28px;
+  height: 14px;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  transform: scale(1.2);
+  opacity: 0.9;
+}
+
+/* 💫 Hạt sáng */
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  filter: blur(2px);
+  opacity: 0;
+  box-shadow: 0 0 12px rgba(255,200,120,0.6);
+}
+
+/* 💐 Bó hoa */
+.bouquet {
+  display: block;
+  margin: 25px auto 0 auto;
+  width: 220px;
+  max-width: 60%;
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,0.25));
+  transition: all 1s ease;
+}
+.show-bouquet {
+  opacity: 1 !important;
+  transform: scale(1);
+  animation: bouquetFloat 3s ease-in-out infinite alternate;
+}
+@keyframes bouquetFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-8px) scale(1.02); }
+}
+
+/* ⚙️ Nút điều khiển */
+.controls {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+@media (max-width:720px) {
+  .card {flex-direction: column; height: auto;}
+  .left, .right {width: 100%; min-height: 250px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="left">
+      <div class="door-light" id="doorLight"></div>
+      <div class="door" id="door">
+        <div class="door-overlay" id="doorOverlay">Cánh cửa ngày mới của ChouChou</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <!-- Scene 1 -->
+      <div class="scene" id="scene1">
+        <div class="greeting">
+          <h1>Một ngày mệt mỏi qua rồi 🌄</h1>
+          <p>Mong hôm nay mọi chuyện của chị bé đều thuận lợi</p>
+        </div>
+      </div>
+
+      <!-- Scene 2 -->
+      <div class="scene" id="scene2">
+        <div class="sun"></div>
+        <div class="greeting">
+          <h1>Chị bé ☀️</h1>
+          <p>Hôm nay nhớ nghỉ ngơi nhiều hơn một chút nha 💛</p>
+        </div>
+      </div>
+
+      <!-- Scene 3 -->
+      <div class="scene" id="scene3">
+        <div class="particles" id="particles"></div>
+        <div class="greeting">
+          <h1>Buổi sáng an lành 🌸</h1>
+          <p>Chúc chị có một ngày thật nhẹ nhàng… có một đứa con nít vụng về gửi đến chị một chút bình yên 💫</p>
+          <img src="hoa.png" alt="Bouquet" class="bouquet" id="bouquet" />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="openBtn">Mở cửa</button>
+        <button class="btn" id="soundBtn">Tắt âm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<audio id="bgAudio" loop preload="auto" src="song.mp3"></audio>
+
+<script>
+const door = document.getElementById("door");
+const doorLight = document.getElementById("doorLight");
+const overlay = document.getElementById("doorOverlay");
+const openBtn = document.getElementById("openBtn");
+const soundBtn = document.getElementById("soundBtn");
+const scenes = [document.getElementById("scene1"), document.getElementById("scene2"), document.getElementById("scene3")];
+const particles = document.getElementById("particles");
+const bouquet = document.getElementById("bouquet");
+const audio = document.getElementById("bgAudio");
+let soundOn = true;
+const doorSound = new Audio("door_open.mp3");
+
+/* 🌤️ Tự động phát nhạc khi mở trang */
+window.addEventListener("DOMContentLoaded", () => {
+  const tryPlay = () => {
+    audio.volume = 0.6;
+    audio.play().catch(() => {
+      document.addEventListener("click", () => {
+        audio.play().catch(()=>{});
+      }, { once: true });
+    });
+  };
+  tryPlay();
+});
+
+/* ☁️ Mây và chim */
+function createClouds(){
+  for(let i=0;i<3;i++){
+    const c=document.createElement("div");
+    c.className="cloud";
+    c.style.width=100+Math.random()*120+"px";
+    c.style.height=50+Math.random()*60+"px";
+    c.style.top=20+Math.random()*40+"%";
+    c.style.left=-150+"px";
+    scenes[0].appendChild(c);
+    gsap.to(c,{x:window.innerWidth+200,duration:60+Math.random()*30,repeat:-1,ease:"none"});
+  }
+}
+function createBird(){
+  const b=document.createElement("div");
+  b.className="bird";
+  b.style.top=30+Math.random()*30+"%";
+  b.style.left="-30px";
+  scenes[0].appendChild(b);
+  gsap.to(b,{x:window.innerWidth+100,yoyo:true,repeat:-1,duration:25,ease:"none"});
+}
+
+/* 🌞 Mặt trời mọc */
+function sunrise(){
+  const sun = scenes[1].querySelector(".sun");
+  gsap.fromTo(sun,{bottom:"-40%"},{bottom:"20%",duration:3,ease:"power2.out"});
+  gsap.to(sun,{scale:1.05,repeat:-1,yoyo:true,duration:3,ease:"sine.inOut"});
+}
+
+/* 💫 Hạt sáng */
+function createParticles(count=20){
+  particles.innerHTML="";
+  for(let i=0;i<count;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"%";
+    p.style.top=Math.random()*60+"%";
+    const size=4+Math.random()*10;
+    p.style.width=p.style.height=size+"px";
+    particles.appendChild(p);
+    gsap.to(p,{opacity:1,duration:1,delay:Math.random(),onComplete:()=>floatParticle(p)});
+  }
+}
+function floatParticle(p){
+  gsap.to(p,{y:-60-Math.random()*40,opacity:0,duration:3+Math.random()*2,ease:"sine.out",onComplete:()=>{
+    p.style.top=Math.random()*60+"%";
+    p.style.left=Math.random()*100+"%";
+    gsap.set(p,{y:0});
+    floatParticle(p);
+  }});
+}
+
+/* 💐 Bó hoa */
+function showBouquet(){
+  bouquet.classList.add("show-bouquet");
+}
+
+/* ✨ Ánh sáng khi mở cửa */
+function doorLightEffect(){
+  gsap.to(doorLight, {opacity:1, duration:0.8, ease:"power2.out"});
+  gsap.to(doorLight, {opacity:0, duration:2.2, delay:1.2, ease:"sine.inOut"});
+}
+
+/* 🚪 Cửa & cảnh */
+function openDoor(){
+  doorSound.play().catch(()=>{});
+  gsap.to(door,{rotateY:-100,duration:1.2,ease:"power3.out"});
+  gsap.to(overlay,{opacity:0,duration:0.6});
+  doorLightEffect();
+  playScenes();
+}
+
+function playScenes(){
+  scenes.forEach(s=>s.style.opacity=0);
+  const tl = gsap.timeline({defaults:{ease:"power2.inOut"}});
+  tl.to(scenes[0], {opacity:1, duration:1, onStart:()=>{createClouds(); createBird();}})
+    .to(scenes[0], {opacity:0, duration:1, delay:3})
+    .to(scenes[1], {opacity:1, duration:1, onStart:sunrise})
+    .to(scenes[1], {opacity:0, duration:1, delay:4})
+    .to(scenes[2], {opacity:1, duration:1, onStart:()=>{createParticles(); showBouquet();}});
+}
+
+openBtn.onclick=openDoor;
+soundBtn.onclick=()=>{
+  soundOn=!soundOn;
+  if(soundOn){
+    audio.play().catch(()=>{});
+    soundBtn.textContent="Tắt âm";
+  }else{
+    audio.pause();
+    soundBtn.textContent="Bật âm";
+  }
+};
+</script>
+</body>
+</html>
